@@ -1,5 +1,4 @@
-
-             import streamlit as st
+import streamlit as st
 from openai import OpenAI
 
 # Load API key from Streamlit secrets
@@ -15,7 +14,7 @@ if st.button("Get Answer") and question:
     with st.spinner("Searching the Scriptures..."):
         try:
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",  # ✅ Correct model!
+                model="gpt-3.5-turbo",  # ✅ Correct model
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant that answers questions strictly from the Bible and always includes scripture references."},
                     {"role": "user", "content": question}
