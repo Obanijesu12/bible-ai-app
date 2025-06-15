@@ -17,7 +17,7 @@ if st.button("Get Answer") and question:
     with st.spinner("Searching the Scriptures..."):
         try:
             response = client.chat.completions.create(
-                model="gpt-4",  # Or "gpt-3.5-turbo"
+                model="gpt-3.5-turbo",  # Or "gpt-3.5-turbo"
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant who answers only using the Bible and always includes scripture references."},
                     {"role": "user", "content": question}
