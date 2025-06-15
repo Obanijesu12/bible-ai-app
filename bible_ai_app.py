@@ -1,8 +1,9 @@
-import streamlit as st
-import openai
+
+             import streamlit as st
+from openai import OpenAI
 
 # Load API key from Streamlit secrets
-client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 st.set_page_config(page_title="Bible AI Chatbot", layout="centered")
 st.title("📖 Bible AI Chatbot")
@@ -14,7 +15,7 @@ if st.button("Get Answer") and question:
     with st.spinner("Searching the Scriptures..."):
         try:
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",  # ✅ Updated to a model you have access to
+                model="gpt-3.5-turbo",  # ✅ Correct model!
                 messages=[
                     {"role": "system", "content": "You are a helpful assistant that answers questions strictly from the Bible and always includes scripture references."},
                     {"role": "user", "content": question}
@@ -27,4 +28,3 @@ if st.button("Get Answer") and question:
             st.markdown(answer)
         except Exception as e:
             st.error(f"Something went wrong: {e}")
-            
