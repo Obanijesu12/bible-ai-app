@@ -1,40 +1,34 @@
 import streamlit as st
 import openai
 
-# Set your OpenAI API key here or use Streamlit secrets for security
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# Set your OpenAI API key from Streamlit Secrets
+client = openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
-# Streamlit page config
+# Page setup
 st.set_page_config(page_title="Bible AI Chatbot", layout="centered")
-
-# App title
 st.title("📖 Bible AI Chatbot")
-st.write("Ask any question based on the Bible and get AI-powered answers!")
+st.write("Ask anything based on the Bible and receive AI-powered answers with scripture references.")
 
-# Input from the user
-user_question = st.text_input("Type your Bible-related question here:")
+# Input field
+question = st.text_input("Ask a Bible question:")
 
-# When user submits a question
-if st.button("Get Answer") and user_question:
-    with st.spinner("Thinking..."):
+# If the user submits a question
+if st.button("Get Answer") and question:
+    with st.spinner("Searching the Scriptures..."):
         try:
-            prompt = (
-                "You are a helpful assistant that answers questions strictly based on the Bible. "
-                "If something is not found in the Bible, say 'The Bible does not mention that directly.'\n\n"
-                f"Question: {user_question}\nAnswer:"
-            )
-
-            response = openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",  # or "gpt-4" if you have access
-                messages=[{"role": "user", "content": prompt}],
+            response = client.chat.completions.create(
+                model="gpt-4",  # Or "gpt-3.5-turbo"
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant who answers only using the Bible and always includes scripture references."},
+                    {"role": "user", "content": question}
+                ],
                 max_tokens=500,
-                temperature=0.7,
+                temperature=0.7
             )
-
             answer = response.choices[0].message.content.strip()
             st.success("Answer:")
-            st.write(answer)
+            st.markdown(answer)
 
         except Exception as e:
             st.error(f"Something went wrong: {e}")
-          
+
